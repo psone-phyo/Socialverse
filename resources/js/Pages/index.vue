@@ -93,7 +93,6 @@ import Post from "@/Pages/post/post.vue";
 import FriendList from "@/Pages/friendlist/list.vue";
 
 import moment from "moment";
-import { Link, Head } from '@inertiajs/vue3'
 
 export default {
     name: "index",
