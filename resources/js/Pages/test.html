@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- Hidden file input with multiple selection enabled -->
+<input type="file" id="imageInput" accept="image/*" multiple style="display: none;" onchange="previewImages(event)">
+
+<!-- Button to trigger the file input -->
+<button onclick="document.getElementById('imageInput').click()">Upload Images</button>
+
+<!-- Container for image previews -->
+<div id="previewContainer" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;"></div>
+
+<script>
+  function previewImages(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('previewContainer');
+    previewContainer.innerHTML = ''; // Clear previous previews
+
+    // Loop through the selected files and create previews
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.width = '100px';
+        img.style.height = '100px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '8px';
+        previewContainer.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+</script>
+
+
+</body>
+</html>
