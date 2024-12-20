@@ -19,13 +19,13 @@ class PostController extends Controller
     }
 
     public function store(Request $request){
-        dd($request->all());
         $data  = Post::create([
             'user_id' => Auth::user()->id,
             'content' => $request->description,
             'privacy' => 'public'
         ]);
         foreach($request->input('files') as $file){
+            $file = $file["data"];
             $fileStart = strpos($file, ':') + 1;
             $fileEnd = strpos($file, '/');
             $fileType = substr($file, $fileStart, $fileEnd - $fileStart);

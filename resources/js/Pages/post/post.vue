@@ -1,8 +1,8 @@
 <template>
-     <div class="border shadow-sm rounded-md w-[25rem] p-2 mt-2">
+     <div class="border shadow-sm rounded-md w-[25rem] p-2 mt-2 bg-white">
         <header class="flex justify-start items-center gap-3">
             <div>
-                <img src="../../../../public/img/default-avatar.png" class="w-[50px] rounded-full" alt="">
+                <img :src="`/img/default-avatar.png`" class="w-[50px] rounded-full" alt="">
             </div>
             <div>
                 <div>Pyae Sone Phyo</div>
@@ -15,7 +15,7 @@
             <template #item>
                     <div class="mb-4 h-[300px] flex items-center justify-center">
                         <div class="relative mx-auto cursor-pointer">
-                            <img src="../../../../public/img/james.jpg" class="w-full rounded object-contain" />
+                            <img :src="`/img/james.jpg`" class="w-full rounded object-contain" />
                         </div>
                     </div>
             </template>
@@ -59,67 +59,67 @@ onMounted(() => {
 
 const products = ref([]);
 
-const props = defineProps({
-  user_id: Number,
-  post_id: Number,
-  content: String,
-  files: Object,
-  liked: {
-    type: Boolean,
-    required: true,
-  },
-  comments: Array,
-  time: {
-    type: String,
-    required: true,
-  },
-  poster_id: {
-    type: Number,
-    required: true,
-  },
-  poster_name: {
-    type: String,
-    required: true,
-  },
-  poster_profile: {
-    type: String,
-    required: true,
-  },
-});
+// const props = defineProps({
+//   user_id: Number,
+//   post_id: Number,
+//   content: String,
+//   files: Object,
+//   liked: {
+//     type: Boolean,
+//     required: true,
+//   },
+//   comments: Array,
+//   time: {
+//     type: String,
+//     required: true,
+//   },
+//   poster_id: {
+//     type: Number,
+//     required: true,
+//   },
+//   poster_name: {
+//     type: String,
+//     required: true,
+//   },
+//   poster_profile: {
+//     type: String,
+//     required: true,
+//   },
+// });
 
-const form = useForm({
-  user_id: props.user_id,
-  post_id: props.post_id,
-  liked: props.liked,
-});
+// const form = useForm({
+//   user_id: props.user_id,
+//   post_id: props.post_id,
+//   liked: props.liked,
+// });
 
-const isLiked = ref(form.liked);
-let lastTap = 0;
+// const isLiked = ref(form.liked);
+// let lastTap = 0;
 
-const myTimeout = ref(null);
+// const myTimeout = ref(null);
 
-function like() {
-  if (myTimeout) {
-    clearTimeout(myTimeout.value);
-  }
-  isLiked.value = !isLiked.value;
-  const routeName = isLiked.value ? "post.like" : "post.unlike";
-  myTimeout.value = setTimeout(() => {
-    form.post(route(routeName));
-    // console.log('hi');
-  }, 2000);
-}
+// function like() {
+//   if (myTimeout) {
+//     clearTimeout(myTimeout.value);
+//   }
+//   isLiked.value = !isLiked.value;
+//   const routeName = isLiked.value ? "post.like" : "post.unlike";
+//   myTimeout.value = setTimeout(() => {
+//     form.post(route(routeName));
+//     // console.log('hi');
+//   }, 2000);
+// }
 
-function handleTouchStart(event) {
-  const currentTime = new Date().getTime();
-  const tapThreshold = 300; // Threshold time (in ms) for double-tap detection
+// function handleTouchStart(event) {
+//   const currentTime = new Date().getTime();
+//   const tapThreshold = 300; // Threshold time (in ms) for double-tap detection
 
-  if (currentTime - lastTap <= tapThreshold) {
-    like(); // Handle double-tap
-  }
+//   if (currentTime - lastTap <= tapThreshold) {
+//     like(); // Handle double-tap
+//   }
 
-  lastTap = currentTime;
-}
+//   lastTap = currentTime;
+// }
 </script>
 
   <style scoped></style>
