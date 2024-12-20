@@ -1,6 +1,7 @@
 import '../css/app.css';
 import './bootstrap';
 import 'core-js/stable';
+import 'primeicons/primeicons.css'
 
 
 import { createInertiaApp } from '@inertiajs/vue3';
@@ -13,6 +14,9 @@ import '@mdi/font/css/materialdesignicons.css';
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@fortawesome/fontawesome-free/css/all.css';
+import PrimeVue from 'primevue/config';
+import Aura from '@primevue/themes/aura';
+import '../css/primevue-override.css';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -28,11 +32,23 @@ createInertiaApp({
             components,
             directives,
           })
-        return createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) });
+        return app
             .use(plugin)
             .use(ZiggyVue)
             .use(vuetify)
+            .use(PrimeVue, {
+                theme: {
+                    preset: Aura,
+                    options: {
+                        prefix: 'p',
+                        darkModeSelector: 'light',
+                        cssLayer: false
+                    }
+                }
+            })
             .mount(el);
+
     },
     progress: {
         color: '#4B5563',

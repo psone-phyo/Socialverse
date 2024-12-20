@@ -1,92 +1,63 @@
 <template>
-  <div>
-    <v-card
-      class="rounded-md shadow-md mb-1 mt-3"
-      width="400"
-      style="background-color: #0e161b; color: white"
-    >
-      <template v-slot:title>
-        <div
-          class="flex items-center justify-start gap-5 border-b-2 border-white pb-3"
-        >
-          <div>
-            <img
-              :src="poster_profile"
-              alt=""
-              width="50px"
-              class="rounded-full"
-            />
-          </div>
-          <div class="flex flex-column items-start">
-            <h1 class="font-weight-black">{{ poster_name }}</h1>
-            <small class="text-sm text-gray-400">{{ time }}</small>
-          </div>
-        </div>
-      </template>
+     <div class="border shadow-sm rounded-md w-[25rem] p-2 mt-2">
+        <header class="flex justify-start items-center gap-3">
+            <div>
+                <img src="../../../../public/img/default-avatar.png" class="w-[50px] rounded-full" alt="">
+            </div>
+            <div>
+                <div>Pyae Sone Phyo</div>
+                <small>12:59pm</small>
+            </div>
+        </header>
+        <Divider/>
+        <div>
+            <Carousel :value="products" :numVisible="1" :numScroll="1" circular>
+            <template #item>
+                    <div class="mb-4 h-[300px] flex items-center justify-center">
+                        <div class="relative mx-auto cursor-pointer">
+                            <img src="../../../../public/img/james.jpg" class="w-full rounded object-contain" />
+                        </div>
+                    </div>
+            </template>
+            </Carousel>
 
-      <v-card-text class="bg-surface-dark pt-2">
-        <v-carousel
-          height="400"
-          show-arrows="hover"
-          hide-delimiter-background
-          v-show="files.length"
-        >
-          <v-carousel-item
-            @dblclick="like"
-            @touchstart="handleTouchStart"
-            class="cursor-pointer"
-            v-for="(file, index) in files"
-            :key="index"
-          >
-            <v-sheet color="black" height="100%">
-              <template v-if="file.file_type == 'image'">
-                <img
-                  :src="file.file_path"
-                  alt="Image Preview"
-                  class="w-full h-full object-contain"
-                />
-              </template>
-              <template v-else-if="file.file_type == 'video'">
-                <div  class="flex justify-center items-center h-full w-full">
-                    <video
-                  :src="file.file_path"
-                  autoplay
-                  controls
-                  class="w-full object-contain text-center"
-                ></video>
+            <div>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis saepe deserunt nisi non, unde ut iste, reprehenderit, a reiciendis aliquam ratione sint quibusdam est perspiciatis. Ab quae eligendi sequi ducimus.
+            </div>
+
+            <div class="flex justify-start items-center gap-3 my-3">
+                <div>
+                    <i class="fa-regular fa-heart text-xl cursor-pointer"></i>
+                </div>
+                <div>
+                    <i class="fa-solid fa-heart text-xl cursor-pointer"></i>
+                </div>
+                <div>
+                    <i class="fa-regular fa-comments text-xl cursor-pointer"></i>
+                </div>
+                <div>
+                    <i class="fa-regular fa-paper-plane text-xl cursor-pointer"></i>
                 </div>
 
-              </template>
-            </v-sheet>
-          </v-carousel-item>
-        </v-carousel>
-        <p class="my-1">
-          {{ content }}
-        </p>
-        <form
-          class="flex items-center justify-start gap-5 mt-2 mb-1"
-          @submit.prevent="like"
-        >
-          <button type="submit" v-show="!isLiked">
-            <i class="fa-regular fa-heart text-2xl cursor-pointer"></i>
-          </button>
-          <button type="submit" v-show="isLiked">
-            <i
-              class="fa-solid fa-heart text-2xl text-red-500 cursor-pointer"
-            ></i>
-          </button>
-
-          <i class="fa-regular fa-comments text-2xl cursor-pointer"></i>
-          <i class="fa-regular fa-paper-plane text-2xl cursor-pointer"></i>
-        </form>
-      </v-card-text>
-    </v-card>
-  </div>
+            </div>
+        </div>
+     </div>
 </template>
 
   <script setup>
 import { ref, onMounted } from "vue";
 import { useForm } from "@inertiajs/vue3";
+
+//primevue
+import { ProductService } from '../../../../public/service/ProductService';
+import Carousel from 'primevue/carousel';
+import Divider from 'primevue/divider';
+
+onMounted(() => {
+    ProductService.getProductsSmall().then((data) => (products.value = data.slice(0, 9)));
+})
+
+const products = ref([]);
 
 const props = defineProps({
   user_id: Number,

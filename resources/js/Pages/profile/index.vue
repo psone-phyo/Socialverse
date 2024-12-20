@@ -1,5 +1,6 @@
 <template>
-    <Layout class="hidden lg:block">
+
+    <Layout class="hidden lg:hidden">
         <div class="mt-5 bg-gray-900 pb-1 main rounded-md" style="width: 600px">
             <div class="flex justify-between items-center gap-1 py-3">
                 <div class="ml-10">
@@ -106,6 +107,10 @@
             </v-tabs-window>
         </v-card>
     </Layout>
+    <div class="card flex justify-center">
+        <Button label="Submit" />
+    </div>
+
 </template>
 
 <script>
@@ -113,6 +118,7 @@ import moment from "moment";
 import Layout from "@/Pages/layout/desktop.vue";
 import Post from "@/Pages/post/post.vue";
 import { Link, Head } from '@inertiajs/vue3'
+import Button from "primevue/button"
 
 export default {
     data() {
@@ -123,7 +129,8 @@ export default {
     components: {
         Layout,
         Post,
-        Link
+        Link,
+        Button
     },
     props: {
         PostData: Array,
