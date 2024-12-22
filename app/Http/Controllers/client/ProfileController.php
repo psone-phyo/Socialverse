@@ -26,8 +26,9 @@ class ProfileController extends Controller
         $Files = File::select('files.id', 'files.file_path', 'files.file_type' ,'files.post_id')
                 ->leftjoin('posts', 'posts.id', 'files.post_id')
                 ->where('posts.user_id', Auth::user()->id)
+                ->Orderby('files.created_at', 'desc')
                 ->get();
-        // dd($PostData->toArray());
+        // dd($Files->toArray());
         return Inertia::render('profile/index', [
             'PostData' => $PostData,
             'LikePost' => $likes,

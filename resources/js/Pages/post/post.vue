@@ -1,125 +1,120 @@
 <template>
-     <div class="border shadow-sm rounded-md w-[25rem] p-2 mt-2 bg-white">
+    <div class="border shadow-lg rounded-md w-[25rem] p-2 mt-2 bg-white">
         <header class="flex justify-start items-center gap-3">
             <div>
-                <img :src="`/img/default-avatar.png`" class="w-[50px] rounded-full" alt="">
+                <img
+                    :src="props.poster_profile"
+                    class="w-[50px] rounded-full"
+                    alt=""
+                />
             </div>
             <div>
-                <div>Pyae Sone Phyo</div>
-                <small>12:59pm</small>
+                <div class="font-bold">{{ poster_name }}</div>
+                <small>{{ time }}</small>
             </div>
         </header>
-        <Divider/>
+        <Divider />
         <div>
-            <Carousel :value="products" :numVisible="1" :numScroll="1" circular>
-            <template #item>
-                    <div class="mb-4 h-[300px] flex items-center justify-center">
-                        <div class="relative mx-auto cursor-pointer">
-                            <img :src="`/img/james.jpg`" class="w-full rounded object-contain" />
-                        </div>
-                    </div>
-            </template>
-            </Carousel>
-
-            <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis saepe deserunt nisi non, unde ut iste, reprehenderit, a reiciendis aliquam ratione sint quibusdam est perspiciatis. Ab quae eligendi sequi ducimus.
+            <div class="card bg-gray-100">
+                <Gallery :images="files"/>
+            </div>
+            <div class="mt-2">
+                {{ content }}
             </div>
 
             <div class="flex justify-start items-center gap-3 my-3">
-                <div>
+                <div v-if="!isLiked" @click="like()">
                     <i class="fa-regular fa-heart text-xl cursor-pointer"></i>
                 </div>
-                <div>
-                    <i class="fa-solid fa-heart text-xl cursor-pointer"></i>
+                <div v-else @click="like()">
+                    <i
+                        class="fa-solid fa-heart text-xl cursor-pointer text-red-500"
+                    ></i>
                 </div>
                 <div>
-                    <i class="fa-regular fa-comments text-xl cursor-pointer"></i>
+                    <i
+                        class="fa-regular fa-comments text-xl cursor-pointer"
+                    ></i>
                 </div>
                 <div>
-                    <i class="fa-regular fa-paper-plane text-xl cursor-pointer"></i>
+                    <i
+                        class="fa-regular fa-paper-plane text-xl cursor-pointer"
+                    ></i>
                 </div>
-
             </div>
         </div>
-     </div>
+    </div>
 </template>
 
-  <script setup>
+<script setup>
 import { ref, onMounted } from "vue";
 import { useForm } from "@inertiajs/vue3";
-
+import Gallery from '@/Pages/post/ImageDisplay/galleria.vue';
 //primevue
-import { ProductService } from '../../../../public/service/ProductService';
-import Carousel from 'primevue/carousel';
-import Divider from 'primevue/divider';
+import Divider from "primevue/divider";
+import Galleria from "primevue/galleria";
+import Image from 'primevue/image';
 
-onMounted(() => {
-    ProductService.getProductsSmall().then((data) => (products.value = data.slice(0, 9)));
-})
+const props = defineProps({
+    user_id: Number,
+    post_id: Number,
+    content: String,
+    files: Object,
+    liked: {
+        type: Boolean,
+        required: true,
+    },
+    comments: Array,
+    time: {
+        type: String,
+        required: true,
+    },
+    poster_id: {
+        type: Number,
+        required: true,
+    },
+    poster_name: {
+        type: String,
+        required: true,
+    },
+    poster_profile: {
+        type: String,
+        required: true,
+    },
+});
 
-const products = ref([]);
+const form = useForm({
+    user_id: props.user_id,
+    post_id: props.post_id,
+    liked: props.liked,
+});
 
-// const props = defineProps({
-//   user_id: Number,
-//   post_id: Number,
-//   content: String,
-//   files: Object,
-//   liked: {
-//     type: Boolean,
-//     required: true,
-//   },
-//   comments: Array,
-//   time: {
-//     type: String,
-//     required: true,
-//   },
-//   poster_id: {
-//     type: Number,
-//     required: true,
-//   },
-//   poster_name: {
-//     type: String,
-//     required: true,
-//   },
-//   poster_profile: {
-//     type: String,
-//     required: true,
-//   },
-// });
+const isLiked = ref(form.liked);
+let lastTap = 0;
 
-// const form = useForm({
-//   user_id: props.user_id,
-//   post_id: props.post_id,
-//   liked: props.liked,
-// });
+const myTimeout = ref(null);
 
-// const isLiked = ref(form.liked);
-// let lastTap = 0;
+function like() {
+    if (myTimeout) {
+        clearTimeout(myTimeout.value);
+    }
+    isLiked.value = !isLiked.value;
+    const routeName = isLiked.value ? "post.like" : "post.unlike";
+    myTimeout.value = setTimeout(() => {
+        form.post(route(routeName), { preserveScroll: true });
+    }, 2000);
+}
 
-// const myTimeout = ref(null);
+function handleTouchStart(event) {
+    const currentTime = new Date().getTime();
+    const tapThreshold = 300; // Threshold time (in ms) for double-tap detection
 
-// function like() {
-//   if (myTimeout) {
-//     clearTimeout(myTimeout.value);
-//   }
-//   isLiked.value = !isLiked.value;
-//   const routeName = isLiked.value ? "post.like" : "post.unlike";
-//   myTimeout.value = setTimeout(() => {
-//     form.post(route(routeName));
-//     // console.log('hi');
-//   }, 2000);
-// }
+    if (currentTime - lastTap <= tapThreshold) {
+        like(); // Handle double-tap
+    }
 
-// function handleTouchStart(event) {
-//   const currentTime = new Date().getTime();
-//   const tapThreshold = 300; // Threshold time (in ms) for double-tap detection
-
-//   if (currentTime - lastTap <= tapThreshold) {
-//     like(); // Handle double-tap
-//   }
-
-//   lastTap = currentTime;
-// }
+    lastTap = currentTime;
+}
 </script>
 
-  <style scoped></style>
+<style scoped></style>

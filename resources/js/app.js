@@ -17,6 +17,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import '../css/primevue-override.css';
+import ToastService from 'primevue/toastservice';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -47,6 +48,7 @@ createInertiaApp({
                     }
                 }
             })
+            .use(ToastService)
             .mount(el);
 
     },

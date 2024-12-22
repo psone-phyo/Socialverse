@@ -1,0 +1,11 @@
+<Post
+                                    :content="post.content"
+                                    :files="post.files"
+                                    :liked="post.liked"
+                                    :time="formatTimeAgo(post.created_at)"
+                                    :poster_id="post.poster_id"
+                                    :poster_name="post.poster_name"
+                                    :poster_profile="post.poster_profile"
+                                    :user_id="UserData.id"
+                                    :post_id="post.post_id"
+                                />
