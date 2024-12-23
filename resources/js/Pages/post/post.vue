@@ -16,7 +16,7 @@
         <Divider />
         <div>
             <div class="card bg-gray-100">
-                <Gallery :images="files"/>
+                <Gallery :images="files" :fnlike="like"/>
             </div>
             <div class="mt-2">
                 {{ content }}
@@ -90,7 +90,7 @@ const form = useForm({
 });
 
 const isLiked = ref(form.liked);
-let lastTap = 0;
+
 
 const myTimeout = ref(null);
 
@@ -105,16 +105,7 @@ function like() {
     }, 2000);
 }
 
-function handleTouchStart(event) {
-    const currentTime = new Date().getTime();
-    const tapThreshold = 300; // Threshold time (in ms) for double-tap detection
 
-    if (currentTime - lastTap <= tapThreshold) {
-        like(); // Handle double-tap
-    }
-
-    lastTap = currentTime;
-}
 </script>
 
 <style scoped></style>

@@ -26,7 +26,7 @@
                         </div>
                     </template>
                     <template #thumbnail="slotProps">
-                        <div v-show="files.length > 1">
+                        <div v-show="images.length > 1">
                             <img
                                 :src="slotProps.item.file_path"
                                 alt="image"
@@ -47,7 +47,11 @@ const props = defineProps({
     images: {
         type: Object,
         required: true
-    }
+    },
+    fnlike: {
+        type: Function,
+        required: true
+    },
 });
 
 const responsiveOptions = ref([
@@ -60,6 +64,17 @@ const responsiveOptions = ref([
         numVisible: 1,
     },
 ]);
+let lastTap = 0;
+function handleTouchStart(event) {
+    const currentTime = new Date().getTime();
+    const tapThreshold = 300; // Threshold time (in ms) for double-tap detection
+
+    if (currentTime - lastTap <= tapThreshold) {
+        props.fnlike(); // Handle double-tap
+    }
+
+    lastTap = currentTime;
+}
 </script>
 
 <style lang="stylus" scoped>

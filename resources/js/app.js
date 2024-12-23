@@ -19,6 +19,7 @@ import Aura from '@primevue/themes/aura';
 import '../css/primevue-override.css';
 import ToastService from 'primevue/toastservice';
 
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({

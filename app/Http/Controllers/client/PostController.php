@@ -7,7 +7,10 @@ use App\Models\Like;
 use App\Models\Post;
 use Inertia\Inertia;
 use App\Models\Image;
+use App\Events\Pusher;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -70,6 +73,19 @@ class PostController extends Controller
             'user_id' => $request->user_id,
             'post_id' => $request->post_id
         ]);
+        $receiver_id = Post::select('user_id')->where('id', $request->post_id)->first();
+        $notification = Notification::create([
+            'user_id' => $receiver_id->user_id,
+            'sender_id' => $request->user_id,
+            'message' => 'liked your post',
+            'seen' => 0
+        ]);
+        $data = [
+            'notification' => $notification,
+            'message' => 'liked your post'
+        ];
+        event(new Pusher($data));
+        // return redirect('/pushertest', ['data' => $data]);
     }
 
     public function unlike(Request $request){

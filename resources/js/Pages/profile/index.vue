@@ -79,7 +79,7 @@
                                     :poster_id="post.poster_id"
                                     :poster_name="post.poster_name"
                                     :poster_profile="post.poster_profile"
-                                    :user_id="UserData.id"
+                                    :user_id="props.UserData.id"
                                     :post_id="post.post_id"/>
                         </div>
 
@@ -136,6 +136,14 @@ const processedPosts = () => {
 const  formatTimeAgo = (timestamp) => {
     return moment(timestamp).fromNow(); // Convert to "time ago"
 }
+// onMounted(() => {
+//     window.Echo.channel('chat')
+//             .listen('.message.sent', (e) => {
+//                 console.log('New message:', e);
+//             });
+
+// })
+
 </script>
 
 <style scoped>
