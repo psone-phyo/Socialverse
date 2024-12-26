@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,12 @@ Route::middleware('auth')->group(function () {
 Route::get('/pushertest', function () {
     return view('pushertest');
 })->name('pusher');
+
+Route::get('/form', function () {
+    return view('form');
+});
+
+Route::post('/formpost', [FileController::class, 'index'])->name('form');
 
 require __DIR__.'/auth.php';
 require __DIR__ .'/admin.php';

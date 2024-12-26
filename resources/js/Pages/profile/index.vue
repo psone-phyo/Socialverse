@@ -136,13 +136,7 @@ const processedPosts = () => {
 const  formatTimeAgo = (timestamp) => {
     return moment(timestamp).fromNow(); // Convert to "time ago"
 }
-// onMounted(() => {
-//     window.Echo.channel('chat')
-//             .listen('.message.sent', (e) => {
-//                 console.log('New message:', e);
-//             });
 
-// })
 
 </script>
 

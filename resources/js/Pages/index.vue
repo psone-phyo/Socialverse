@@ -26,6 +26,7 @@ import Post from "@/Pages/post/post.vue";
 import moment from 'moment'
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
+import {onMounted} from 'vue';
 
 const toast = useToast();
 
@@ -59,6 +60,15 @@ const processedPosts = () => {
 
 const formatTimeAgo = (timestamp) => moment(timestamp).fromNow(); // Convert to "time ago"
 
+onMounted(() => {
+    window.Echo.private('management') // Subscribe to the private channel
+        .listen('PusherEvent', (event) => {
+            console.log('Event received:', event); // Log the event data
+        })
+        .error((error) => {
+            console.error('Error:', error); // Log connection errors
+        });
+});
 </script>
 
 <style scoped></style>

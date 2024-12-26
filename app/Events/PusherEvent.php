@@ -10,16 +10,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class Pusher implements ShouldBroadcast
+class PusherEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $noti;
+    public $msg;
     /**
      * Create a new event instance.
      */
-    public function __construct($noti)
+    public function __construct($msg)
     {
-        $this->noti = $noti;
+        $this->msg = $msg;
     }
 
     /**
@@ -27,13 +27,15 @@ class Pusher implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
-        return ['my-channel'];
+        return [
+            new PrivateChannel('management'),
+        ];
     }
 
     public function broadcastAs()
     {
-        return 'my-event';
+        return 'PusherEvent';  // Ensure the event name matches
     }
 }
